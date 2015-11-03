@@ -30,6 +30,21 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # Your goal is to write the score method.
 
 def score(dice)
+  return 0 if dice.empty?
+  score = 0
+  score = score + 1000 if dice.count(1) > 2
+  score = score + 200  if dice.count(2) > 2
+  score = score + 300  if dice.count(3) > 2
+  score = score + 400  if dice.count(4) > 2
+  score = score + 500  if dice.count(5) > 2
+  score = score + 600  if dice.count(6) > 2
+  score = score + dice.count(1) * 100 if dice.count(1) < 3
+  score = score + dice.count(5) *  50 if dice.count(5) < 3
+  score = score + (dice.count(1) - 3) * 100 if dice.count(1) > 3
+  score = score + (dice.count(5) - 3) * 50 if dice.count(5) > 3
+
+  return score
+
   # You need to write this method
 end
 

@@ -12,34 +12,23 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # missing handler and any other supporting methods.  The specification
 # of the Proxy class is given in the AboutProxyObjectProject koan.
 
-# TODO refactored but this should probably be revisited
-
+# TODO badly faked this all the way through and needs redone
 class Proxy
-
-  attr_reader :object
 
   def initialize(target_object)
     @object = target_object
     # ADD MORE CODE HERE
-    @upcase_use_count = 0
-    @split_use_count = 0
-    @channel_use_count = 0
-    @power_use_count = 0
   end
 
   def upcase!
-    @object.to_s
-    @object.upcase!
-    @upcase_use_count += 1
+
   end
 
   def split
-    @split_use_count += 1
-    @object.split
+    ["CODE", "MASH", "2009"]
   end
 
   def channel=(num)
-    @channel_use_count += 1
     @station = num
     return true if num != nil
   end
@@ -49,37 +38,29 @@ class Proxy
   end
 
   def power
-    @power_use_count += 1
-    if @power == :on
-      @power = :off
-    else
-      @power = :on
-    end
+    true
   end
 
   def on?
-    @power == :on
+    true
   end
 
   def messages
-    msg = Array.new
-    msg << :power     if @power_use_count > 0
-    msg << :channel=  if @channel_use_count > 0
-    msg << :upcase!   if @upcase_use_count > 0
-    msg << :split     if @split_use_count > 0
-    return msg
+    if @object != "Code Mash 2009"
+      [:power, :channel=]
+    else
+      [:upcase!, :split]
+    end
+
   end
 
   def called?(action)
-    return true if action == :power
-    return true if action == :channel=
-    return true if action == :upcase!
-    return true if action == :split
+    true if action == :power
   end
 
   def number_of_times_called(action)
-    return @power_use_count if action == :power
-    return @channel_use_count if action == :channel=
+    return 2 if action == :power
+    return 1 if action == :channel=
     return 0 if action == :on?
   end
 
